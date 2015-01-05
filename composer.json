@@ -1,0 +1,25 @@
+{
+    "name": "payment/gateway",
+    "description": "payment gateway adapter",
+    "keywords": ["gateway", "paypal", "braintree"],
+    "homepage": "https://github.com/pickme/payment-gateway-php",
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Ronnachate",
+            "email": "ronnachate@gmail.com"
+        }
+    ],
+    "require": {
+        "php": ">=5.4.0",
+        "paypal/rest-api-sdk-php" : "0.7.*",
+        "braintree/braintree_php" : "*"
+    },
+    "autoload": {
+        "psr-0": {
+            "Payment\\Gateway": "src/"
+        }
+    },
+    "minimum-stability": "stable"
+}
