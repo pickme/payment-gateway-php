@@ -1,7 +1,7 @@
 <?php namespace Payment\Providers;
 
-use Payment\GatewayException;
 use Braintree_Gateway;
+use Payment\Providers\TransactionResult;
 
 class Braintree extends ProviderAbstract implements ProviderInterface {
 

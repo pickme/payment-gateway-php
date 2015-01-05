@@ -45,7 +45,6 @@ class ProviderAbstract {
         return $this;
     }
 
-
     /**
      * Set to enable sandbox mode
      *

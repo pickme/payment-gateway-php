@@ -1,6 +1,5 @@
 <?php namespace Payment\Providers;
 
-use Payment\GatewayException;
 use PayPal\Api\Amount;
 use PayPal\Api\Details;
 use PayPal\Api\Item;
@@ -11,6 +10,7 @@ use PayPal\Api\RedirectUrls;
 use PayPal\Api\Transaction;
 use PayPal\Rest\ApiContext;
 use PayPal\Auth\OAuthTokenCredential;
+use Payment\Providers\TransactionResult;
 
 class Paypal extends ProviderAbstract implements ProviderInterface {
 
