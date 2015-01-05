@@ -9,7 +9,8 @@ $config = array(
     'paypal' => array(
         'logfile' => '/tmp/paypal.log',
         'clientid' => 'AXWCshAD1aAEe3rmhqVBJU8jjl8NZvDP4sWE5utK6F30-jB80BTNWmnN2IvL',
-        'clientSecret' => 'EJs8yRDtVU30otbO1olx20UqhCJK8X13kekGKVrUZGhwtqAoPc_jRLqRunLK'
+        'clientSecret' => 'EJs8yRDtVU30otbO1olx20UqhCJK8X13kekGKVrUZGhwtqAoPc_jRLqRunLK',
+    	'sandbox' => '1'
      ),
     'braintree' => array(
         'merchantid' => '6wdpvcgyx8mrh9xs',
@@ -35,6 +36,10 @@ $gateway = new Gateway($config);
 
 $provider = $gateway->getBraintreeProvider();
 
-$provider->doPayment($parms);
+$result = $provider->doPayment($parms);
+
+if($result->isSuccess ) {
+	print "Transaction success with id".$result->getReferenceId;
+}
 
 echo "Success";

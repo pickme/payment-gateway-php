@@ -43,18 +43,7 @@ class Braintree extends ProviderAbstract implements ProviderInterface {
                                         'expirationDate' => '05/12'
                         )
         ));
-        
-        if ($result->success) {
-            print_r("success!: " . $result->transaction->id);
-        } else if ($result->transaction) {
-            print_r("Error processing transaction:");
-            print_r("\n  code: " . $result->transaction->processorResponseCode);
-            print_r("\n  text: " . $result->transaction->processorResponseText);
-        } else {
-            print_r("Validation errors: \n");
-            print_r($result->errors->deepAll());
-        }
-        
+        return $this->_getTransactionResult($result);  
     }
 
     protected function setMerchantid($val)
@@ -83,5 +72,20 @@ class Braintree extends ProviderAbstract implements ProviderInterface {
     	$gateway = new Braintree_Gateway($config);
     	return $gateway;
     }
-
+    private function _getTransactionResult($result)
+    {
+    	$res = array(
+    	    'success' => $result->success,
+    		'provider' => $this->PROVIDER
+    	);
+    	if ($result->success) {
+    		$res['referenceid'] =  $result->transaction->id;
+    	}
+    	else if ($result->transaction) {
+    		$res['error'] = $result->transaction->processorResponseText;
+    	} else {
+    		$res['error'] = "Validation errors".$result->errors->deepAll();
+    	}
+    	return new Braintree_Gateway($res);
+    }
 }
