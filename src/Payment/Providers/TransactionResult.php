@@ -17,8 +17,6 @@ class TransactionResult  {
 	public function __construct($params=array())
 	{
 		$this->_success = $params['success'];
-		$this->_errorMsg = $params['error'];
-		$this->_referenceId = $params['referenceid'];
 		$this->_provider = $params['provider'];
 	}
     /**
@@ -29,12 +27,7 @@ class TransactionResult  {
      */
     public function isSuccess()
     {
-    	if(isset($this->_sandBox)) {
-    		return true;
-    	}
-    	else {
-    		return false;
-    	}
+    	return $this->_success;
     }
     /**
      * return transaction error message.
@@ -46,15 +39,38 @@ class TransactionResult  {
     {
 	    return $this->_success;
     }
+    
+    /**
+     * set transaction error message.
+     *
+     * @access public
+     * @param string $val
+     * @return string
+     */
+    public function setErrorMsg($val)
+    {
+    	$this->_success = $val;
+    }
     /**
      * return transaction reference id link to provider.
      *
      * @access public
-     * @return string
+     * @return void
      */
     public function getReferenceId()
     {
         return $this->_referenceId;
+    }
+    /**
+     * set transaction reference id link to provider.
+     *
+     * @access public
+     * @param string $val
+     * @return void
+     */
+    public function setReferenceId($val)
+    {
+    	$this->_referenceId = $val;
     }
     /**
      * return provider name of the result.
