@@ -51,7 +51,7 @@ class ProviderAbstract {
      * @access public
      * @param  bool
      */
-    public function setSandboxMode($val)
+    public function setSandboxmode($val)
     {
         $this->_sandBox = $val;
     }
