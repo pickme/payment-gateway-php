@@ -35,15 +35,9 @@ class Braintree extends ProviderAbstract implements ProviderInterface {
      */
     public function doPayment($val)
     {
-        $transaction = $this->_gateway->transaction();
-        $result = $transaction->sale(array(
-                        'amount' => '1000.00',
-                        'creditCard' => array(
-                                        'number' => '5105105105105100',
-                                        'expirationDate' => '05/12'
-                        )
-        ));
-        return $this->_getTransactionResult($result);  
+         $transaction = $this->_gateway->transaction();
+         $result = $transaction->sale($this->_getBraintreeParms($val));
+         return $this->_getTransactionResult($result); 
     }
 
     protected function setMerchantid($val)
@@ -64,7 +58,6 @@ class Braintree extends ProviderAbstract implements ProviderInterface {
     	   'merchantId' => $this->_merchantId,
     	   'publicKey' => $this->_publicKey,
     	   'privateKey' => $this->_privateKey,
-    	   'environment' => 'sandbox'
     	);
     	if( $this->_isSandbox() ) {
     	    $config['environment'] = 'sandbox';
@@ -87,5 +80,17 @@ class Braintree extends ProviderAbstract implements ProviderInterface {
     		$res->setErrorMsg("Validation errors".$result->errors->deepAll());
     	}
     	return $res;
+    }
+    private function _getBraintreeParms($val)
+    {
+    	$amount = $val['amount'];
+    	$cardinfo = $val['cardinfo'];
+    	return array(
+    			'amount' => $amount['total'],
+    			'creditCard' => array(
+    					'number' => $cardinfo['number'],
+    					'expirationDate' => $cardinfo['expired']
+    			)
+    	);
     }
 }
