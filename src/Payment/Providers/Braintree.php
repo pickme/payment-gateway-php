@@ -74,18 +74,18 @@ class Braintree extends ProviderAbstract implements ProviderInterface {
     }
     private function _getTransactionResult($result)
     {
-    	$res = array(
+    	$res = new TransactionResult(array(
     	    'success' => $result->success,
-    		'provider' => $this->PROVIDER
-    	);
+    		'provider' => self::PROVIDER
+    	));
     	if ($result->success) {
-    		$res['referenceid'] =  $result->transaction->id;
+    		$res->setReferenceId($result->transaction->id);
     	}
     	else if ($result->transaction) {
-    		$res['error'] = $result->transaction->processorResponseText;
+    		$res->setErrorMsg($result->transaction->processorResponseText);
     	} else {
-    		$res['error'] = "Validation errors".$result->errors->deepAll();
+    		$res->setErrorMsg("Validation errors".$result->errors->deepAll());
     	}
-    	return new Braintree_Gateway($res);
+    	return $res;
     }
 }
