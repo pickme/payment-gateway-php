@@ -12,7 +12,7 @@ interface ProviderInterface {
      *
      * @param string $val
      */
-    public function setSandboxMode($val);
+    public function setSandboxmode($val);
 
      /**
      * Do a payment.
