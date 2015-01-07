@@ -22,8 +22,10 @@ class Paypal extends ProviderAbstract implements ProviderInterface {
     private $_apiContext = null;
     private $_clientId = null;
     private $_clientSecret = null;
-    private $_logfile= null;
-
+    private $_logfile = null;
+    private $_productionUrl = null;
+    private $_sandboxUrl = null;
+    private $_connectTimeout = null;
     /**
      * Construct the payment provider
      *
@@ -113,6 +115,18 @@ class Paypal extends ProviderAbstract implements ProviderInterface {
     {
 		$this->_logfile = $val;
 	}
+	protected function setTimeout($val)
+	{
+		$this->_connectTimeout = $val;
+	}
+	protected function setProductionurl($val)
+	{
+		$this->_productionUrl= $val;
+	}
+	protected function setSandboxurl($val)
+	{
+		$this->_sandboxUrl = $val;
+	}
     function _getApiContext()
     {
         $apiContext = new ApiContext(
@@ -122,14 +136,17 @@ class Paypal extends ProviderAbstract implements ProviderInterface {
             )
         );
         $config = array(
-            'http.ConnectionTimeOut' => 30,
+            'http.ConnectionTimeOut' => $this->_connectTimeout,
             'cache.enabled' => 'true',
             'log.LogLevel' => 'FINE',
             'validation.level' => 'log',
-            'service.EndPoint' => 'https://api.sandbox.paypal.com'
         );
         if( $this->_isSandbox() ) {
 			$config['mode'] = 'sandbox';
+			$config['service.EndPoint'] = $this->_sandboxUrl;
+		}
+		else {
+			$config['service.EndPoint'] = $this->_productionUrll;
 		}
 		$config['log.FileName'] = $this->_logfile;
         $apiContext->setConfig($config);

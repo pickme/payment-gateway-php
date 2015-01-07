@@ -9,7 +9,10 @@ $config = array(
         'logfile' => '/tmp/paypal.log',
         'clientid' => 'AXWCshAD1aAEe3rmhqVBJU8jjl8NZvDP4sWE5utK6F30-jB80BTNWmnN2IvL',
         'clientSecret' => 'EJs8yRDtVU30otbO1olx20UqhCJK8X13kekGKVrUZGhwtqAoPc_jRLqRunLK',
-    	'sandboxmode' => '1'
+    	'sandboxmode' => '1',
+    	'productionurl' => 'https://api.paypal.com',
+    	'sandboxurl' => 'https://api.sandbox.paypal.com',
+    	'timeout' => 30
      ),
     'braintree' => array(
         'merchantid' => '6wdpvcgyx8mrh9xs',
@@ -22,7 +25,7 @@ $config = array(
 $parms = array(
 	'payer' => array(
         'cardinfo' => array(
-        	'type'   => 'visa',
+            'type'   => 'visa',
             'holder' => 'Test',
             'number' => '4417119669820331',
             'expired' => '05/16'
@@ -40,11 +43,13 @@ $parms = array(
 
 $gateway = new Gateway($config);
 
-$provider = $gateway->getBraintreeProvider();
+$provider = $gateway->getPaypalProvider();
+//$provider = $gateway->getBraintreeProvider();
 
 $result = $provider->doPayment($parms);
- if($result->isSuccess() ) {
- 	print "Transaction success with id".$result->getReferenceId();
- }
-
-echo "Success";
+if($result->isSuccess() ) {
+    print "Transaction success with id".$result->getReferenceId();
+}
+else {
+  	print "Transaction failed with msg".$result->getErrorMsg();
+}
