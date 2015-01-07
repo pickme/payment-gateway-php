@@ -5,7 +5,6 @@ class ProviderAbstract {
     /**
      * Sandbox mode
      *
-     * @var boolean
      */
     protected $_sandbox = 0;
 
@@ -48,16 +47,15 @@ class ProviderAbstract {
     /**
      * Set to enable sandbox mode
      *
-     * @access public
      * @param  integer
      */
-    public function setSandboxmode($val)
+    protected function setSandboxmode($val)
     {
         $this->_sandBox = $val;
     }
 
     /**
-     * Set to enable sandbox mode
+     * return true if sandbox mode parms set.
      *
      * @access public
      * @return  bool

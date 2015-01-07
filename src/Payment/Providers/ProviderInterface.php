@@ -7,13 +7,6 @@ interface ProviderInterface {
      */
     public function __construct($opts=array());
 
-    /**
-     * Enable sandbox API
-     *
-     * @param string $val
-     */
-    public function setSandboxmode($val);
-
      /**
      * Do a payment.
      *
