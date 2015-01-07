@@ -16,6 +16,9 @@
         "paypal/rest-api-sdk-php" : "0.7.*",
         "braintree/braintree_php" : "*"
     },
+    "require-dev": {
+        "phpunit/phpunit": "3.7.*"
+    },
     "autoload": {
         "psr-0": {
             "Payment\\Gateway": "src/"
