@@ -37,7 +37,7 @@ class TransactionResult  {
      */
     public function getErrorMsg()
     {
-	    return $this->_success;
+	    return $this->_errorMsg;
     }
     
     /**
@@ -49,7 +49,7 @@ class TransactionResult  {
      */
     public function setErrorMsg($val)
     {
-    	$this->_success = $val;
+    	$this->_errorMsg = $val;
     }
     /**
      * return transaction reference id link to provider.
