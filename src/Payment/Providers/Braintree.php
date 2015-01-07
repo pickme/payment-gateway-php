@@ -77,7 +77,7 @@ class Braintree extends ProviderAbstract implements ProviderInterface {
     	else if ($result->transaction) {
     		$res->setErrorMsg($result->transaction->processorResponseText);
     	} else {
-    		$res->setErrorMsg("Validation errors".$result->errors->deepAll());
+    		$res->setErrorMsg($result->errors->deepAll()[0]->__get('message'));
     	}
     	return $res;
     }
