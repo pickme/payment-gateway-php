@@ -26,7 +26,7 @@ class ProviderAbstract {
      * @param  array $params
      * @return object
      */
-    public function initialize($params)
+    protected function initialize($params)
     {
 
         if (count($params) > 0)
