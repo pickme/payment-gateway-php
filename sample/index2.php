@@ -22,7 +22,7 @@ $config = array(
 $parms = array(
 	'payer' => array(
         'cardinfo' => array(
-        	'type'   => 'visa',
+            'type'   => 'visa',
             'holder' => 'Test',
             'number' => '4417119669820331',
             'expired' => '05/16'
@@ -40,11 +40,15 @@ $parms = array(
 
 $gateway = new Gateway($config);
 
-$provider = $gateway->getBraintreeProvider();
+$provider = $gateway->getPaypalProvider();
 
 $result = $provider->doPayment($parms);
- if($result->isSuccess() ) {
- 	print "Transaction success with id".$result->getReferenceId();
- }
+  if($result->isSuccess() ) {
+  	print "Transaction success with id".$result->getReferenceId();
+  }
+  else {
+  	print "Transaction failed with msg".$result->getErrorMsg();
+  }
+  
 
 echo "Success";
