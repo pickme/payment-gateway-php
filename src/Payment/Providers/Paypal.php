@@ -141,7 +141,7 @@ class Paypal extends ProviderAbstract implements ProviderInterface {
             'log.LogLevel' => 'FINE',
             'validation.level' => 'log',
         );
-        if( $this->_isSandbox() ) {
+        if( $this->isSandbox() ) {
 			$config['mode'] = 'sandbox';
 			$config['service.EndPoint'] = $this->_sandboxUrl;
 		}

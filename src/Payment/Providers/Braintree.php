@@ -59,7 +59,7 @@ class Braintree extends ProviderAbstract implements ProviderInterface {
     	   'publicKey' => $this->_publicKey,
     	   'privateKey' => $this->_privateKey,
     	);
-    	if( $this->_isSandbox() ) {
+    	if( $this->isSandbox() ) {
     	    $config['environment'] = 'sandbox';
     	}
     	$gateway = new Braintree_Gateway($config);
