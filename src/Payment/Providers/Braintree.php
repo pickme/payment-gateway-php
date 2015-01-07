@@ -84,7 +84,8 @@ class Braintree extends ProviderAbstract implements ProviderInterface {
     private function _getBraintreeParms($val)
     {
     	$amount = $val['amount'];
-    	$cardinfo = $val['cardinfo'];
+    	$payer = $val['payer'];
+    	$cardinfo = $payer['cardinfo'];
     	return array(
     			'amount' => $amount['total'],
     			'creditCard' => array(

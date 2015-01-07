@@ -20,11 +20,14 @@ $config = array(
 );
 
 $parms = array(
-    'cardinfo' => array(
-        'holder' => 'Test',
-    	'number' => '5105105105105100',
-    	'expired' => '05/12'
-     ),
+	'payer' => array(
+        'cardinfo' => array(
+        	'type'   => 'visa',
+            'holder' => 'Test',
+            'number' => '4417119669820331',
+            'expired' => '05/12'
+        ),
+	),
     'items' => array(
         'id' => 'id',
      ),
