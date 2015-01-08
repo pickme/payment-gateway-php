@@ -74,13 +74,32 @@
             </div>
             <div class="form-row">
                 <label>
-                    <span>Expiration (MM/YYYY)</span>
-                    <input name="mm"type="text" size="2" />
+                    <span>Expiration (MM/YY)</span>
+                    <select name="mm">
+                        <option value="01">1</option>
+                        <option value="02">2</option>
+                        <option value="03">3</option>
+                        <option value="04">4</option>
+                        <option value="05">5</option>
+                        <option value="06">6</option>
+                        <option value="07">7</option>
+                        <option value="08">8</option>
+                        <option value="09">9</option>
+                        <option value="10">10</option>
+                        <option value="11">11</option>
+                        <option value="12">12</option>
+                    </select>
                 </label>
                 <span> / </span>
-                <input name="yyyy" type="text" size="4"/>
+                <select name="yy">
+                        <option value="12">2012</option>
+                        <option value="13">2013</option>
+                        <option value="14">2014</option>
+                        <option value="15">2015</option>
+                        <option value="16">2016</option>
+               </select>
             </div>
-            </br>
+            <br>
             <button type="submit">Submit Payment</button>
         </form>
     </body>
