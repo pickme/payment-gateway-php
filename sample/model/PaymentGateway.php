@@ -2,7 +2,7 @@
 
 use Payment\Gateway;
 
-class Gateway {
+class PaymentGateway {
 	
 	private $_gateway = null;
 
