@@ -8,6 +8,8 @@ Class Core {
  */
     private $_models = array();
     private $_stash = array();
+    private $_parms = array();
+    private $_config = array();
 
     public function model($name)
     {
@@ -15,13 +17,18 @@ Class Core {
      	    $modelName = "\\Payment\\Sample\\Model\\".$name;
      	
      	    include ('model/'.$name.'.php');
-     	    $this->_models[$name] = new $modelName();
+     	    if( isset($this->_config[$name])) {
+     	        $this->_models[$name] = new $modelName($this->_config[$name]);
+     	    }
+     	    else {
+     	        $this->_models[$name] = new $modelName();
+     	    }
         }
         return $this->_models[$name];
     }
     public function setStash($key, $val)
     {
-    	$this->_models[$key] = $val;
+    	$this->_stash[$key] = $val;
     }
     public function getStash($val)
     {
@@ -31,6 +38,44 @@ Class Core {
     	else {
     		return $this->_stash;
     	}
+    }
+    public function renderView($name)
+    {
+        $path = './views' . '/' . $name . '.php';
+        
+        if (file_exists($path) == false)
+        {
+            die('Template not found in '. $path);
+        }
+        
+        // Load variables
+        foreach ($this->_stash as $key => $value)
+        {
+            $$key = $value;
+        }
+        include ($path);
+    }
+    public function requestParams($val)
+    {
+        if( !isset( $this->_parms) ) {
+            foreach($_POST as $key=>$val) {
+                $this->_parms[$key]= $val;
+            }      
+            foreach($_GET as $key=>$val) {
+                $this->_parms[$key]= $val;
+            }
+            unset($this->_parms['route']);
+        }
+        if ( isset($val) ) {
+            return $this->_parms[$val];
+        }
+        else {
+            return $this->_parms;
+        }
+    }
+    public function loadConfig($val)
+    {
+        $this->_config = $val;
     }
 }
 
