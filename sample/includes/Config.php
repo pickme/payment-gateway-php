@@ -17,5 +17,9 @@ $config = array(
             'privatekey' => '5a493c3625a3cf7b698b87fa1e68b223',
             'sandboxmode' => '1'
         )
+    ),
+    'DB' => array(
+        'filename' => '../../sample.db',
+        'encryptKey' => 'ABC.1234'
     )
 );
