@@ -13,21 +13,33 @@ class Gateway {
 	
 	public function doPayment($parms)
 	{
-		
+		$provider = $this->_selectProvider($params);
+		return $provider->doPayment($parms);
 	}
 	
-	private function _selectProvider($params) {
-		
+	private function _selectProvider($params)
+	{
+	    $getFunction = "getBrainereeProvider";
+	    $payer = $params['payer'];
+		$cardinfo = $payer['cardinfo'];
+		$amount = $params['amount'];
+		$type = $this->_validateCard($cardinfo['number']);
+		if( $type != $cardinfo['type']) {
+		    die("Invalid card number or card type");
+		}
+		if( $type == 'amex' ) {
+		    if( $amount['currency'] != 'USD' ) {
+		        die(" AMEX is possible to use only for USD");
+		    }
+		    $getFunction = "getPaypalProvider";
+		}
+		else if (in_array($amount['currency'], array('USD', 'EUR', 'AUD'))) {
+		    $getFunction = "getPaypalProvider";
+		}
+		return $this->_gateway->$getFunction();
 	}
 
-	private function _getPaymentParams($params) {
-		
-	}
 	private function _validateCard($card)
-	{
-		
-	}
-	private function _getCardType($card)
 	{
 		$cards = array(
             "visa" => "(4\d{12}(?:\d{3})?)",
@@ -38,10 +50,10 @@ class Gateway {
             "mastercard" => "(5[1-5]\d{14})",
             "switch" => "(?:(?:(?:4903|4905|4911|4936|6333|6759)\d{12})|(?:(?:564182|633110)\d{10})(\d\d)?\d?)",
 		);
-		$names = array("Visa", "Amex", "JCB", "Maestro", "Solo", "Mastercard", "Switch");
+		$names = array("visa", "amex", "jcb", "maestro", "solo", "mastercard", "switch");
 		$matches = array();
 		$pattern = "#^(?:".implode("|", $cards).")$#";
-		$result = preg_match($pattern, str_replace(" ", "", $cc), $matches);
+		$result = preg_match($pattern, str_replace(" ", "", $card), $matches);
 		
 		return ($result>0)?$names[sizeof($matches)-2]:false;
 	}
