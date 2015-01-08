@@ -60,9 +60,9 @@ Class Core {
         }
         include ($path);
     }
-    public function requestParams($val)
+    public function requestParams($name)
     {
-        if( !isset( $this->_parms) ) {
+        if( count( $this->_parms) == 0 ) {
             foreach($_POST as $key=>$val) {
                 $this->_parms[$key]= $val;
             }      
@@ -70,8 +70,9 @@ Class Core {
                 $this->_parms[$key]= $val;
             }
             unset($this->_parms['route']);
+
         }
-        if ( isset($val) ) {
+        if ( isset($name) ) {
             return $this->_parms[$val];
         }
         else {
