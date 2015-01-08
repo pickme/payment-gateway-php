@@ -1,5 +1,6 @@
 <?php
 
+require_once '../autoload.php';
 require_once './includes/Core.php';
 include './includes/Router.php';
 include './includes/Config.php';
