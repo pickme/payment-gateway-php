@@ -13,14 +13,24 @@ class DB extends SQLiteDatabase {
 	
 	public function saveOrder($val)
 	{
-	    
+	    $cardinfo = $val['cardinfo'];
+	    $amount = $val['amount'];
+	    $response = $val['response'];
+	    $card_id = $this->querySingle('SELECT id from CreditCard where card_number = '.$cardinfo['number']);
+	    if( !isset($card_id) ) {
+	        $this->exec('INSERT INTO CreditCard (holder, card_number, expired, cvv) VALUES ("'.$cardinfo['holder'].'","'.$cardinfo['number'].'","'.$cardinfo['expired'].'","'.$cardinfo['cvv'].'")');
+	        $card_id = $this->lastInsertRowid();
+	    }
+	    $this->exec('INSERT INTO CreditCard (customer, amount, currency, card_id) VALUES ("'.$val['customer'].'",'.$amout['total'].',"'.$amount['currency'].'",'.$card_id.')');
+	    $order_id = $this->lastInsertRowid();
+	    $this->exec('INSERT INTO Transaction (order_id, response, created) VALUES ('.$order_id.',"'.$response.'","'.$cardinfo['expired'].'")');
 	}
 	
     private function _createSchema()
     {
-        $q = $this->query('CREATE TABLE IF NOT EXISTS Transaction (id int, order_id int, response text, created text,PRIMARY KEY (id))');
-        $q = $this->query('CREATE TABLE IF NOT EXISTS Order (id int, customer text, amount number, currency text, card_id int, PRIMARY KEY (id))');
-        $q = $this->query('CREATE TABLE IF NOT EXISTS CreditCard (id int, holder text, card_number text, expired text, cvv text, PRIMARY KEY (id))');
+        $this->exec('CREATE TABLE IF NOT EXISTS Transaction (id int, order_id int, response text, created text,PRIMARY KEY (id))');
+        $this->exec('CREATE TABLE IF NOT EXISTS Order (id int, customer text, amount number, currency text, card_id int, PRIMARY KEY (id))');
+        $this->exec('CREATE TABLE IF NOT EXISTS CreditCard (id int, holder text, card_number text, card_number text, cvv text, PRIMARY KEY (id))');
     }
     private function _encryptData($str)
     {
