@@ -18,7 +18,7 @@ class DB extends SQLiteDatabase {
 	    $response = $val['response'];
 	    $card_id = $this->querySingle('SELECT id from CreditCard where card_number = '.$cardinfo['number']);
 	    if( !isset($card_id) ) {
-	        $this->exec('INSERT INTO CreditCard (holder, card_number, expired, cvv) VALUES ("'.$cardinfo['holder'].'","'.$cardinfo['number'].'","'.$cardinfo['expired'].'","'.$cardinfo['cvv'].'")');
+	        $this->exec('INSERT INTO CreditCard (holder, card_number, expired, cvv) VALUES ("'.$cardinfo['holder'].'","'.$this->_encryptData($cardinfo['number']).'","'.$cardinfo['expired'].'","'.$this->_encryptData($cardinfo['cvv']).'")');
 	        $card_id = $this->lastInsertRowid();
 	    }
 	    $this->exec('INSERT INTO CreditCard (customer, amount, currency, card_id) VALUES ("'.$val['customer'].'",'.$amout['total'].',"'.$amount['currency'].'",'.$card_id.')');
