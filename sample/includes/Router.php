@@ -53,10 +53,10 @@ class Router {
     * @return void
     *
     */
-    public function loader()
+    public function loader($r)
     {
 	   /*** check the route ***/
-	   $this->setController();
+	   $this->setController($r);
 
 	   /*** if the file is not there diaf ***/
 	   if (is_readable($this->file) == false)
@@ -95,10 +95,17 @@ class Router {
     * @return void
     *
     */
-    private function setController() {
+    private function setController($r) {
 
-	   /*** get the route from the url ***/
-	   $route = (empty($_GET['route'])) ? '' : $_GET['route'];
+        $route = null;
+        if( $r ) {
+            $route = $r;
+        }
+        else {
+            /*** get the route from the url ***/
+            $route = (empty($_GET['route'])) ? '' : $_GET['route'];
+        }
+
 
 	   if (empty($route))
 	   {

@@ -13,3 +13,4 @@ $c->loadConfig($config);
 
 $r = new Router($c);
 $r->setPath('./controller');
+$c->setRoute($r);

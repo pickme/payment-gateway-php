@@ -10,6 +10,7 @@ Class Core {
     private $_stash = array();
     private $_parms = array();
     private $_config = array();
+    private $_route = null;
 
     public function model($name)
     {
@@ -29,6 +30,10 @@ Class Core {
     public function setStash($key, $val)
     {
     	$this->_stash[$key] = $val;
+    }
+    public function setRoute($r)
+    {
+        $this->_route = $r;
     }
     public function getStash($val)
     {
@@ -76,6 +81,10 @@ Class Core {
     public function loadConfig($val)
     {
         $this->_config = $val;
+    }
+    public function redirect($r)
+    {
+        $this->_route->loader($r);
     }
 }
 
