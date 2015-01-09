@@ -57,7 +57,6 @@ class Paypal extends ProviderAbstract implements ProviderInterface {
         $res = null;
          try {
 	        $result = $payment->create($this->_apiContext);
-	        var_dump($result);
 	        $res = array(
 	            'success' => true,
 	        	'id' => $result->getId()
