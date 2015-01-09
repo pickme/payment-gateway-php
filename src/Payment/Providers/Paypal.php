@@ -55,18 +55,19 @@ class Paypal extends ProviderAbstract implements ProviderInterface {
 		$payment->setPayer($payer);
 		$payment->setTransactions(array($transaction));
         $res = null;
-        try {
+         try {
 	        $result = $payment->create($this->_apiContext);
+	        var_dump($result);
 	        $res = array(
 	            'success' => true,
 	        	'id' => $result->getId()
 	        );
-        } catch (PPConnectionException $ex) {
-	        $res = array(
-	            'success' => false,
-	        	'message' => $ex->getData()
-	        );
-        }
+         } catch (PPConnectionException $ex) {
+ 	        $res = array(
+ 	            'success' => false,
+ 	        	'message' => $this->_getErrorMessage($ex->getData())
+ 	        );
+         }
         return $this->_getTransactionResult($res);
     }
     
@@ -166,5 +167,12 @@ class Paypal extends ProviderAbstract implements ProviderInterface {
     		$res->setErrorMsg($result['message']);
     	}
     	return $res;
+    }
+    private function _getErrorMessage($msg)
+    {
+        $data = json_decode($msg);
+        $name = $data->name;
+        $detail = $data->details[0]->issue;
+        return $name.' - '.$detail;
     }
 }
