@@ -1,7 +1,7 @@
 <?php
 
 $config = array(
-    'Gateway' => array(
+    'PaymentGateway' => array(
         'paypal' => array(
             'logfile' => '/tmp/paypal.log',
             'clientid' => 'AXWCshAD1aAEe3rmhqVBJU8jjl8NZvDP4sWE5utK6F30-jB80BTNWmnN2IvL',
