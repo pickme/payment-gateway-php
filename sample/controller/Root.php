@@ -13,7 +13,6 @@ class Root {
 	
 	public function index()
 	{
-	    $this->c->setStash('User','Yo');
 	    $this->c->renderView('Root');
 	}
 
@@ -25,24 +24,33 @@ class Root {
         try 
         {
             $result = $this->c->model('PaymentGateway')->doPayment($params);
-        if($result->isSuccess() ) {
-            print "Transaction success with id".$result->getReferenceId();
-        }
-        else {
-            print "Transaction failed with msg ".$result->getErrorMsg();
-        }
+            if( $result->isSuccess() ) {
+                $params['response'] = array(
+                    'status' => 'success',
+                    'id' => $result->getReferenceId(),
+                    'provider' => $result->getProviderName()
+                );
+                $this->c->model('DB')->saveOrder($params);
+                $this->c->setStash("Message","Pay to ".$result->getProviderName(). " success with Reference ID: ".$result->getReferenceId());
+                $this->c->renderView('Root');
+            }
+            else {         
+                $this->c->setStash("ErrMsg",$ex->getMessage());
+        	    $this->c->renderView('Root');
+            }
         }
         catch ( \Exception $ex ) 
         {
             $this->c->setStash("ErrMsg",$ex->getMessage());
         	$this->c->renderView('Root');
         }
-        echo "Finish";
+ 
     }
 
     private function _getPaymentParams($val)
     {
         return array(
+            'customer' => $val['customer'],
             'payer' => array(
                 'cardinfo' => array(
                     'type'   => $val['card_type'],
