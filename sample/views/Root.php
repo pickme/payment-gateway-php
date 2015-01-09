@@ -9,9 +9,13 @@
  
         <form action="./?route=Root/process" method="POST" id="payment-form">
             <span class="payment-errors">
+            <?php if( isset($ErrMsg) ) { ?>
             <font color="red"><?php echo $ErrMsg ?></font>
             </span>
-
+            <?php  } else if (isset($Message)) { ?>
+            <font color="blue"><?php echo $Message ?></font>
+            </span>
+             <?php }?>
             <h2>Customer section</h2>
             <div class="form-row">
                 <label>
