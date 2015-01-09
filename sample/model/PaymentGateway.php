@@ -13,23 +13,23 @@ class PaymentGateway {
 	
 	public function doPayment($parms)
 	{
-		$provider = $this->_selectProvider($params);
+		$provider = $this->_selectProvider($parms);
 		return $provider->doPayment($parms);
 	}
 	
 	private function _selectProvider($params)
 	{
-	    $getFunction = "getBrainereeProvider";
+	    $getFunction = "getBraintreeProvider";
 	    $payer = $params['payer'];
 		$cardinfo = $payer['cardinfo'];
 		$amount = $params['amount'];
 		$type = $this->_validateCard($cardinfo['number']);
 		if( $type != $cardinfo['type']) {
-		    die("Invalid card number or card type");
+		    throw new \Exception("Invalid card number or card type");
 		}
 		if( $type == 'amex' ) {
 		    if( $amount['currency'] != 'USD' ) {
-		        die(" AMEX is possible to use only for USD");
+		        throw new \Exception(" AMEX is possible to use only for USD");
 		    }
 		    $getFunction = "getPaypalProvider";
 		}
