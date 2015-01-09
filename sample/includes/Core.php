@@ -83,10 +83,6 @@ Class Core {
     {
         $this->_config = $val;
     }
-    public function redirect($r)
-    {
-        $this->_route->loader($r);
-    }
 }
 
 ?>
