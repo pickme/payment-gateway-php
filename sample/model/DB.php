@@ -1,36 +1,36 @@
 <?php namespace Payment\Sample\Model;
 
-class DB extends SQLiteDatabase {
+class DB extends \SQLite3 {
 	
     private $_config = null;
 	public function __construct($config)
 	{
 	    $params = $config['filename'];
 	    parent::__construct($params);
-	    $this->__createSchema();
+	    $this->_createSchema();
 	    $this->_config = $config;
 	}
 	
 	public function saveOrder($val)
 	{
-	    $cardinfo = $val['cardinfo'];
+	    $cardinfo = $val['payer']['cardinfo'];
 	    $amount = $val['amount'];
 	    $response = $val['response'];
-	    $card_id = $this->querySingle('SELECT id from CreditCard where card_number = '.$cardinfo['number']);
+	    $card_id = $this->querySingle('SELECT id from CreditCards where card_number = "'.$this->_encryptData($cardinfo['number']).'"');
 	    if( !isset($card_id) ) {
-	        $this->exec('INSERT INTO CreditCard (holder, card_number, expired, cvv) VALUES ("'.$cardinfo['holder'].'","'.$this->_encryptData($cardinfo['number']).'","'.$cardinfo['expired'].'","'.$this->_encryptData($cardinfo['cvv']).'")');
+	        $this->exec('INSERT INTO CreditCards (holder, card_number, expired, cvv) VALUES ("'.$cardinfo['holder'].'","'.$this->_encryptData($cardinfo['number']).'","'.$cardinfo['expired'].'","'.$this->_encryptData($cardinfo['cvv']).'")');
 	        $card_id = $this->lastInsertRowid();
 	    }
-	    $this->exec('INSERT INTO CreditCard (customer, amount, currency, card_id) VALUES ("'.$val['customer'].'",'.$amout['total'].',"'.$amount['currency'].'",'.$card_id.')');
-	    $order_id = $this->lastInsertRowid();
-	    $this->exec('INSERT INTO Transaction (order_id, response, created) VALUES ('.$order_id.',"'.$response.'","'.$cardinfo['expired'].'")');
+ 	    $this->exec('INSERT INTO Orders (customer, amount, currency, card_id) VALUES ("'.$val['customer'].'",'.$amount['total'].',"'.$amount['currency'].'",'.$card_id.')');
+ 	    $order_id = $this->lastInsertRowid();
+ 	    $this->exec('INSERT INTO Transactions (order_id, response,  referrence_id, provider, created) VALUES ('.$order_id.',"'.$response['status'].'","'.$response['id'].'","'.$response['provider'].'","'.microtime().'")');
+
 	}
-	
     private function _createSchema()
-    {
-        $this->exec('CREATE TABLE IF NOT EXISTS Transaction (id int, order_id int, response text, created text,PRIMARY KEY (id))');
-        $this->exec('CREATE TABLE IF NOT EXISTS Order (id int, customer text, amount number, currency text, card_id int, PRIMARY KEY (id))');
-        $this->exec('CREATE TABLE IF NOT EXISTS CreditCard (id int, holder text, card_number text, card_number text, cvv text, PRIMARY KEY (id))');
+    {       
+        $this->exec('CREATE TABLE IF NOT EXISTS Transactions (id int, order_id int, response text, referrence_id text, provider text, created text,PRIMARY KEY (id))');
+        $this->exec('CREATE TABLE IF NOT EXISTS Orders (id int, customer text, amount number, currency text, card_id int, PRIMARY KEY (id))');
+        $this->exec('CREATE TABLE IF NOT EXISTS CreditCards (id int, holder text, card_number text, expired text, cvv text, PRIMARY KEY (id))');
     }
     private function _encryptData($str)
     {
