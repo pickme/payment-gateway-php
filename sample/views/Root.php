@@ -8,7 +8,9 @@
         <h1>Sample payment form</h1>
  
         <form action="./?route=Root/process" method="POST" id="payment-form">
-            <span class="payment-errors"></span>
+            <span class="payment-errors">
+            <font color="red"><?php echo $ErrMsg ?></font>
+            </span>
 
             <h2>Customer section</h2>
             <div class="form-row">
