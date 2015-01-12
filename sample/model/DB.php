@@ -3,6 +3,12 @@
 class DB extends \SQLite3 {
 	
     private $_config = null;
+    /**
+     * Construct the DB model
+     * @access public
+     * @param  array $params (default: array())
+     * @return void
+     */
 	public function __construct($config)
 	{
 	    $params = $config['filename'];
@@ -10,7 +16,13 @@ class DB extends \SQLite3 {
 	    $this->_createSchema();
 	    $this->_config = $config;
 	}
-	
+
+	/**
+	 * save success or to data base
+	 *
+	 * @access public
+	 * @param  array
+	 */
 	public function saveOrder($val)
 	{
 	    $cardinfo = $val['payer']['cardinfo'];
@@ -26,12 +38,14 @@ class DB extends \SQLite3 {
  	    $this->exec('INSERT INTO Transactions (order_id, response,  referrence_id, provider, created) VALUES ('.$order_id.',"'.$response['status'].'","'.$response['id'].'","'.$response['provider'].'","'.microtime().'")');
 
 	}
+
     private function _createSchema()
     {       
         $this->exec('CREATE TABLE IF NOT EXISTS Transactions (id int, order_id int, response text, referrence_id text, provider text, created text,PRIMARY KEY (id))');
         $this->exec('CREATE TABLE IF NOT EXISTS Orders (id int, customer text, amount number, currency text, card_id int, PRIMARY KEY (id))');
         $this->exec('CREATE TABLE IF NOT EXISTS CreditCards (id int, holder text, card_number text, expired text, cvv text, PRIMARY KEY (id))');
     }
+
     private function _encryptData($str)
     {
         $encryption_key = $this->_config['encryptKey'];
@@ -40,6 +54,7 @@ class DB extends \SQLite3 {
         $encrypted_string = mcrypt_encrypt(MCRYPT_BLOWFISH, $encryption_key, utf8_encode($str), MCRYPT_MODE_ECB, $iv);
         return $encrypted_string;
     }
+
     private function _decryptData($str)
     {
         $encryption_key = $this->_config['encryptKey'];

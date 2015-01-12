@@ -4,18 +4,30 @@
 class Root {
 	
 	private $c = null;
-
+	/**
+	 * Construct the payment gateway model( Better to put this as abstrac class)
+	 *
+	 * @access public
+	 */
 	public function __construct($c)
 	{
 	    $this->c = $c;
 	    
 	}
-	
+	/**
+	 * Main page to display input form
+	 *
+	 * @access public
+	 */
 	public function index()
 	{
 	    $this->c->renderView('Root');
 	}
-
+	/**
+	 * payment processing function
+	 *
+	 * @access public
+	 */
     public function process()
     {
     	$result = null;

@@ -5,12 +5,23 @@ use Payment\Gateway;
 class PaymentGateway {
 	
 	private $_gateway = null;
-
+	/**
+	 * Construct the payment gateway model
+	 *
+	 * @access public
+	 * @param  array $params (default: array())
+	 * @return void
+	 */
 	public function __construct($config)
 	{
 	    $this->_gateway = new Gateway($config);
 	}
-	
+	/**
+	 * do payment process
+	 *
+	 * @access public
+	 * @param  array
+	 */
 	public function doPayment($parms)
 	{
 		$provider = $this->_selectProvider($parms);
