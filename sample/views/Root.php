@@ -3,6 +3,11 @@
     <head>
         <meta http-equiv="Content-type" content="text/html; charset=utf-8" />
         <title>Payment Form</title>
+        <script type="text/javascript">
+            String.prototype.isNumber = function() {
+                return /^\d+$/.test(this);
+            }
+        </script>
     </head>
     <body>
         <h1>Sample payment form</h1>
@@ -20,7 +25,7 @@
             <div class="form-row">
                 <label>
                     <span>Customer name</span>
-                    <input name ="customer" type="text" size="50" />
+                    <input name ="customer" id="customer" type="text" size="50" />
                 </label>
             </div>
 
@@ -28,7 +33,7 @@
             <div class="form-row">
                 <label>
                     <span>Price</span>
-                    <input name="total" type="text" size="15" />
+                    <input name="total" id="total" type="text" size="15" />
                 </label>
             </div>
             <div class="form-row">
@@ -49,7 +54,7 @@
             <div class="form-row">
                 <label>
                     <span>Holder name</span>
-                    <input name="holder" type="text" size="50" />
+                    <input name="holder" id="holder" type="text" size="50" />
                 </label>
             </div>
             <div class="form-row">
@@ -68,14 +73,14 @@
             <div class="form-row">
                 <label>
                     <span>Card Number</span>
-                    <input name="number" type="text" size="20"/>
+                    <input name="number" id="number" type="text" size="20"/>
                 </label>
             </div>
  
             <div class="form-row">
                 <label>
                     <span>CVC</span>
-                    <input name="cvc" type="text" size="4"/>
+                    <input name="cvc" id="cvc" type="text" size="4"/>
                 </label>
             </div>
             <div class="form-row">
@@ -108,5 +113,35 @@
             <br>
             <button type="submit">Submit Payment</button>
         </form>
+        <script type="text/javascript">
+             document.getElementById("payment-form").onsubmit = function() {
+                 var customer = document.getElementById("customer").value;
+                 if( customer == '' ) {
+                     alert("Please input customer name");
+                     return false;
+                 }
+                 var total = document.getElementById("total").value;
+                 if( (total == '') || ( total.isNumber() == false ) ){
+                     alert("Please input price as number");
+                     return false;
+                 }
+                 var holder = document.getElementById("holder").value;
+                 if( holder == '' ) {
+                     alert("Please input card holder name");
+                     return false;
+                 }
+                 var numb = document.getElementById("number").value;
+                 if( ( numb == '') || ( numb.isNumber() == false ) || ( numb.length < 15) ) {
+                     alert("Please input correct card number");
+                     return false;
+                 }
+                 var cvc = document.getElementById("cvc").value;
+                 if( ( cvc == '') || ( cvc.isNumber() == false ) ) {
+                     alert("Please input correct cvc number");
+                     return false;
+                 }
+                 return true;
+             };
+        </script>
     </body>
 </html> 
